@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-lang-key="app_title">Réglages F1 Ultra Embossage</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Custom scrollbar for better aesthetics */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #2d3748;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #4a5568;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #718096;
+        }
+        /* Style for range input tracks */
+        input[type=range]::-webkit-slider-runnable-track {
+            background: #4a5568;
+            height: 4px;
+            border-radius: 2px;
+        }
+        input[type=range]::-moz-range-track {
+            background: #4a5568;
+            height: 4px;
+            border-radius: 2px;
+        }
+        /* Style for range input thumbs */
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: #38b2ac;
+            cursor: pointer;
+            margin-top: -6px;
+        }
+        input[type=range]::-moz-range-thumb {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: #38b2ac;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white antialiased">
+
+    <div class="container mx-auto p-4 md:p-8">
+        <header class="text-center mb-8 relative">
+            <h1 class="text-3xl md:text-4xl font-bold text-teal-300" data-lang-key="main_title">Réglages F1 Ultra Embossage</h1>
+            <p class="text-gray-400 mt-2" data-lang-key="main_subtitle">Sauvegardez et retrouvez facilement vos configurations d'embossage.</p>
+            <button id="lang-switcher" class="absolute top-0 right-0 bg-gray-700 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded-lg transition duration-300">EN</button>
+        </header>
+
+        <div class="flex flex-col lg:flex-row gap-8">
+            <!-- Form Section -->
+            <div class="lg:w-1/3 bg-gray-800 p-6 rounded-2xl shadow-lg border border-gray-700 self-start lg:sticky top-8">
+                <h2 id="form-title" class="text-2xl font-semibold mb-6 border-b border-gray-600 pb-3" data-lang-key="form_title_add">Ajouter un réglage</h2>
+                <form id="laser-form" class="space-y-4">
+                    <input type="hidden" id="edit-id">
+                    
+                    <div>
+                        <label for="nom" class="block text-sm font-medium text-gray-300" data-lang-key="setting_name_label">Nom du réglage</label>
+                        <input type="text" id="nom" class="mt-1 w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 text-white focus:ring-2 focus:ring-teal-400 focus:outline-none" value="Test" required>
+                    </div>
+
+                    <div class="grid grid-cols-1 gap-4 pt-4">
+                        <div>
+                            <label for="vitesse" class="block text-sm font-medium text-gray-300" data-lang-key="speed_label">Vitesse (mm/s)</label>
+                            <div class="flex items-center gap-3 mt-1">
+                                <input type="range" id="vitesse" min="0" max="10000" value="300" class="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer">
+                                <input type="number" id="vitesse-input" min="0" max="10000" value="300" class="w-24 bg-gray-700 border border-gray-600 rounded-lg px-2 py-1 text-white focus:ring-2 focus:ring-teal-400 focus:outline-none">
+                            </div>
+                        </div>
+                        <div>
+                            <label for="puissance" class="block text-sm font-medium text-gray-300" data-lang-key="power_label">Puissance (%)</label>
+                             <div class="flex items-center gap-3 mt-1">
+                                <input type="range" id="puissance" min="0" max="100" value="100" class="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer">
+                                <input type="number" id="puissance-input" min="0" max="100" value="100" class="w-24 bg-gray-700 border border-gray-600 rounded-lg px-2 py-1 text-white focus:ring-2 focus:ring-teal-400 focus:outline-none">
+                            </div>
+                        </div>
+                         <div>
+                            <label for="frequence" class="block text-sm font-medium text-gray-300" data-lang-key="frequency_label">Fréquence (kHz)</label>
+                             <div class="flex items-center gap-3 mt-1">
+                                <input type="range" id="frequence" min="30" max="60" value="30" class="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer">
+                                <input type="number" id="frequence-input" min="30" max="60" value="30" class="w-24 bg-gray-700 border border-gray-600 rounded-lg px-2 py-1 text-white focus:ring-2 focus:ring-teal-400 focus:outline-none">
+                            </div>
+                        </div>
+                    </div>
+                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4">
+                        <div>
+                            <label for="passes" class="block text-sm font-medium text-gray-300" data-lang-key="passes_label">Passes</label>
+                            <input type="number" id="passes" min="1" max="10" value="1" class="mt-1 w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 text-white focus:ring-2 focus:ring-teal-400 focus:outline-none">
+                        </div>
+                        <div>
+                            <label for="angle" class="block text-sm font-medium text-gray-300" data-lang-key="angle_label">Angle de Gravure</label>
+                            <input type="number" id="angle" min="0" max="360" value="15" class="mt-1 w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 text-white focus:ring-2 focus:ring-teal-400 focus:outline-none">
+                        </div>
+                        <div>
+                            <label for="lignes_par_cm" class="block text-sm font-medium text-gray-300" data-lang-key="lpc_label">Lignes par cm</label>
+                            <select id="lignes_par_cm" class="mt-1 w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 text-white focus:ring-2 focus:ring-teal-400 focus:outline-none">
+                                <option>10</option><option>20</option><option>30</option><option>40</option><option>50</option><option>60</option><option>70</option><option>80</option><option>90</option><option>100</option><option>120</option><option>140</option><option>160</option><option>180</option><option>200</option><option>220</option><option>240</option><option>260</option><option>280</option><option selected>300</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label for="resultats" class="block text-sm font-medium text-gray-300" data-lang-key="results_label">Résultats / Notes</label>
+                        <textarea id="resultats" rows="3" class="mt-1 w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 text-white focus:ring-2 focus:ring-teal-400 focus:outline-none"></textarea>
+                    </div>
+
+                    <div>
+                        <label for="photo" class="block text-sm font-medium text-gray-300" data-lang-key="photo_label">Photo du résultat</label>
+                        <input type="file" id="photo" accept="image/*" class="mt-1 block w-full text-sm text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-teal-500 file:text-white hover:file:bg-teal-600 cursor-pointer">
+                        <img id="photo-preview" class="hidden mt-2 rounded-lg max-h-40 w-auto" />
+                    </div>
+
+                    <div id="form-buttons" class="pt-4 flex flex-col gap-2">
+                        <button type="submit" id="submit-btn" class="w-full bg-teal-500 hover:bg-teal-600 text-white font-bold py-3 px-4 rounded-lg transition duration-300 ease-in-out transform hover:scale-105" data-lang-key="save_button">
+                            Sauvegarder le réglage
+                        </button>
+                        <button type="button" id="cancel-edit-btn" class="hidden w-full bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300" data-lang-key="cancel_edit_button">
+                            Annuler la modification
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Settings List Section -->
+            <div class="lg:w-2/3">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-2xl font-semibold" data-lang-key="saved_settings_title">Réglages sauvegardés</h2>
+                    <div class="flex gap-2">
+                        <button id="import-btn" class="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg text-sm" data-lang-key="import_button">Importer</button>
+                        <input type="file" id="import-file-input" class="hidden" accept=".json">
+                        <button id="export-btn" class="bg-purple-600 hover:bg-purple-700 text-white font-semibold py-2 px-4 rounded-lg text-sm" data-lang-key="export_button">Exporter</button>
+                    </div>
+                </div>
+                <div id="settings-list" class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <p id="no-settings-message" class="text-gray-500 col-span-full text-center py-10" data-lang-key="no_settings_message">Aucun réglage sauvegardé pour le moment.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Generic Message/Confirm Modal -->
+    <div id="message-modal" class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center hidden z-50">
+        <div class="bg-gray-800 rounded-lg shadow-xl p-6 max-w-sm w-full m-4 border border-gray-700">
+            <p id="message-modal-text" class="text-white mb-4"></p>
+            <div id="message-modal-buttons" class="flex justify-end gap-4"></div>
+        </div>
+    </div>
+
+    <!-- Photo Details Modal -->
+    <div id="photo-details-modal" class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center hidden z-50 p-4">
+        <div class="bg-gray-800 rounded-2xl shadow-xl p-6 max-w-4xl w-full max-h-full overflow-y-auto border border-gray-700 relative">
+            <button id="close-photo-modal" class="absolute top-3 right-4 text-gray-400 hover:text-white text-3xl font-bold">&times;</button>
+            <div id="photo-details-content" class="flex flex-col md:flex-row gap-6"></div>
+        </div>
+    </div>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const STORAGE_KEY = 'laser_settings';
+            const LANG_KEY = 'laser_app_language';
+
+            const translations = {
+                en: {
+                    app_title: "F1 Ultra Embossing Settings",
+                    main_title: "F1 Ultra Embossing Settings",
+                    main_subtitle: "Save and easily find your embossing configurations.",
+                    form_title_add: "Add a Setting",
+                    form_title_edit: "Edit Setting",
+                    setting_name_label: "Setting Name",
+                    speed_label: "Speed (mm/s)",
+                    power_label: "Power (%)",
+                    frequency_label: "Frequency (kHz)",
+                    passes_label: "Passes",
+                    angle_label: "Engraving Angle",
+                    lpc_label: "Lines per cm",
+                    results_label: "Results / Notes",
+                    photo_label: "Result Photo",
+                    save_button: "Save Setting",
+                    update_button: "Update",
+                    cancel_edit_button: "Cancel Edit",
+                    saved_settings_title: "Saved Settings",
+                    import_button: "Import",
+                    export_button: "Export",
+                    no_settings_message: "No settings saved yet.",
+                    edit_button: "Edit",
+                    delete_button: "Delete",
+                    photo_popup_notes_title: "Notes:",
+                    photo_popup_no_notes: "No notes.",
+                    alert_no_settings_to_export: "No settings to export.",
+                    confirm_delete_message: "Are you sure you want to delete this setting?",
+                    confirm_import_message: "Do you want to replace your current settings with the ones from the file? This action is irreversible.",
+                    alert_import_success: "Import successful!",
+                    alert_import_error: "Error during import. Make sure the JSON file is valid.",
+                    alert_setting_not_found: "Setting not found.",
+                    alert_image_too_large: "The image file is too large (max 10MB).",
+                    alert_image_error: "Error processing the image.",
+                    photo_popup_speed: "Speed:",
+                    photo_popup_power: "Power:",
+                    photo_popup_passes: "Passes:",
+                    photo_popup_angle: "Angle:",
+                    photo_popup_frequency: "Frequency:",
+                    photo_popup_lpc: "Lines/cm:",
+                    modal_confirm_button: "Confirm",
+                    modal_cancel_button: "Cancel",
+                    modal_ok_button: "OK"
+                },
+                fr: {
+                    app_title: "Réglages F1 Ultra Embossage",
+                    main_title: "Réglages F1 Ultra Embossage",
+                    main_subtitle: "Sauvegardez et retrouvez facilement vos configurations d'embossage.",
+                    form_title_add: "Ajouter un réglage",
+                    form_title_edit: "Modifier le réglage",
+                    setting_name_label: "Nom du réglage",
+                    speed_label: "Vitesse (mm/s)",
+                    power_label: "Puissance (%)",
+                    frequency_label: "Fréquence (kHz)",
+                    passes_label: "Passes",
+                    angle_label: "Angle de Gravure",
+                    lpc_label: "Lignes par cm",
+                    results_label: "Résultats / Notes",
+                    photo_label: "Photo du résultat",
+                    save_button: "Sauvegarder le réglage",
+                    update_button: "Mettre à jour",
+                    cancel_edit_button: "Annuler la modification",
+                    saved_settings_title: "Réglages sauvegardés",
+                    import_button: "Importer",
+                    export_button: "Exporter",
+                    no_settings_message: "Aucun réglage sauvegardé pour le moment.",
+                    edit_button: "Modifier",
+                    delete_button: "Supprimer",
+                    photo_popup_notes_title: "Notes:",
+                    photo_popup_no_notes: "Aucune note.",
+                    alert_no_settings_to_export: "Aucun réglage à exporter.",
+                    confirm_delete_message: "Êtes-vous sûr de vouloir supprimer ce réglage ?",
+                    confirm_import_message: "Voulez-vous remplacer vos réglages actuels par ceux du fichier ? Cette action est irréversible.",
+                    alert_import_success: "Importation réussie !",
+                    alert_import_error: "Erreur lors de l'importation. Assurez-vous que le fichier JSON est valide.",
+                    alert_setting_not_found: "Réglage non trouvé.",
+                    alert_image_too_large: "Le fichier image est trop volumineux (max 10 Mo).",
+                    alert_image_error: "Erreur lors du traitement de l'image.",
+                    photo_popup_speed: "Vitesse:",
+                    photo_popup_power: "Puissance:",
+                    photo_popup_passes: "Passes:",
+                    photo_popup_angle: "Angle:",
+                    photo_popup_frequency: "Fréquence:",
+                    photo_popup_lpc: "Lignes/cm:",
+                    modal_confirm_button: "Confirmer",
+                    modal_cancel_button: "Annuler",
+                    modal_ok_button: "OK"
+                }
+            };
+
+            let currentLanguage = localStorage.getItem(LANG_KEY) || 'fr';
+
+            const langSwitcher = document.getElementById('lang-switcher');
+            const form = document.getElementById('laser-form');
+            const settingsList = document.getElementById('settings-list');
+            const noSettingsMessage = document.getElementById('no-settings-message');
+            const messageModal = document.getElementById('message-modal');
+            const messageModalText = document.getElementById('message-modal-text');
+            const messageModalButtons = document.getElementById('message-modal-buttons');
+            const photoInput = document.getElementById('photo');
+            const photoPreview = document.getElementById('photo-preview');
+            const cancelEditBtn = document.getElementById('cancel-edit-btn');
+            const submitBtn = document.getElementById('submit-btn');
+            const formTitle = document.getElementById('form-title');
+            const editIdInput = document.getElementById('edit-id');
+            const exportBtn = document.getElementById('export-btn');
+            const importBtn = document.getElementById('import-btn');
+            const importFileInput = document.getElementById('import-file-input');
+            const photoDetailsModal = document.getElementById('photo-details-modal');
+            const photoDetailsContent = document.getElementById('photo-details-content');
+            const closePhotoModalBtn = document.getElementById('close-photo-modal');
+
+            function setLanguage(lang) {
+                currentLanguage = lang;
+                localStorage.setItem(LANG_KEY, lang);
+                langSwitcher.textContent = lang === 'fr' ? 'EN' : 'FR';
+                document.documentElement.lang = lang;
+
+                document.querySelectorAll('[data-lang-key]').forEach(el => {
+                    const key = el.dataset.langKey;
+                    if (translations[lang][key]) {
+                        el.textContent = translations[lang][key];
+                    }
+                });
+                // Update dynamic button text
+                if (editIdInput.value) {
+                    submitBtn.textContent = translations[lang].update_button;
+                }
+            }
+            
+            function syncSliderAndInput(sliderId, inputId) {
+                const slider = document.getElementById(sliderId);
+                const input = document.getElementById(inputId);
+                slider.addEventListener('input', () => input.value = slider.value);
+                input.addEventListener('input', () => {
+                    const value = Math.max(Number(slider.min), Math.min(Number(slider.max), Number(input.value)));
+                    slider.value = value;
+                });
+            }
+            syncSliderAndInput('vitesse', 'vitesse-input');
+            syncSliderAndInput('puissance', 'puissance-input');
+            syncSliderAndInput('frequence', 'frequence-input');
+
+            function showAlert(langKey) {
+                messageModalText.textContent = translations[currentLanguage][langKey];
+                messageModalButtons.innerHTML = `<button class="modal-ok-btn bg-teal-500 hover:bg-teal-600 text-white font-bold py-2 px-4 rounded-lg">${translations[currentLanguage].modal_ok_button}</button>`;
+                messageModal.classList.remove('hidden');
+                messageModalButtons.querySelector('.modal-ok-btn').onclick = () => messageModal.classList.add('hidden');
+            }
+
+            function showConfirm(langKey, callback) {
+                messageModalText.textContent = translations[currentLanguage][langKey];
+                messageModalButtons.innerHTML = `
+                    <button class="modal-cancel-btn bg-gray-600 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded-lg">${translations[currentLanguage].modal_cancel_button}</button>
+                    <button class="modal-confirm-btn bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg">${translations[currentLanguage].modal_confirm_button}</button>
+                `;
+                messageModal.classList.remove('hidden');
+                messageModalButtons.querySelector('.modal-confirm-btn').onclick = () => { messageModal.classList.add('hidden'); callback(true); };
+                messageModalButtons.querySelector('.modal-cancel-btn').onclick = () => { messageModal.classList.add('hidden'); callback(false); };
+            }
+
+            function showPhotoDetailsModal(setting) {
+                const photoSection = setting.photoUrl 
+                    ? `<div class="md:w-1/2 flex-shrink-0"><img src="${setting.photoUrl}" alt="${setting.nom}" class="rounded-lg w-full object-contain max-h-[70vh]"></div>` 
+                    : '';
+                const detailsSectionClass = setting.photoUrl ? 'md:w-1/2' : 'w-full';
+                const detailsSection = `
+                    <div class="${detailsSectionClass} space-y-3 text-gray-300">
+                        <h3 class="text-3xl font-bold text-teal-300 mb-4">${setting.nom}</h3>
+                        <div class="grid grid-cols-2 gap-x-4 gap-y-2 bg-gray-700/50 p-4 rounded-lg">
+                            <p><strong>${translations[currentLanguage].photo_popup_speed}</strong></p><p class="text-right">${setting.vitesse} mm/s</p>
+                            <p><strong>${translations[currentLanguage].photo_popup_power}</strong></p><p class="text-right">${setting.puissance} %</p>
+                            <p><strong>${translations[currentLanguage].photo_popup_passes}</strong></p><p class="text-right">${setting.passes}</p>
+                            <p><strong>${translations[currentLanguage].photo_popup_angle}</strong></p><p class="text-right">${setting.angle}°</p>
+                            <p><strong>${translations[currentLanguage].photo_popup_frequency}</strong></p><p class="text-right">${setting.frequence} kHz</p>
+                            <p><strong>${translations[currentLanguage].photo_popup_lpc}</strong></p><p class="text-right">${setting.lignes_par_cm}</p>
+                        </div>
+                        <div class="mt-4">
+                            <h4 class="font-semibold text-lg text-gray-200">${translations[currentLanguage].photo_popup_notes_title}</h4>
+                            <p class="text-gray-400 whitespace-pre-wrap bg-gray-900/50 p-3 rounded-lg mt-1 min-h-[50px]">${setting.resultats || translations[currentLanguage].photo_popup_no_notes}</p>
+                        </div>
+                    </div>
+                `;
+                photoDetailsContent.innerHTML = `${photoSection}${detailsSection}`;
+                photoDetailsModal.classList.remove('hidden');
+            }
+            
+            function getSettingsFromStorage() {
+                try {
+                    return JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+                } catch (e) { return []; }
+            }
+
+            function saveSettingsToStorage(settings) {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(settings));
+            }
+
+            function loadAndRenderSettings() {
+                const settings = getSettingsFromStorage();
+                settingsList.innerHTML = '';
+                if (settings.length === 0) {
+                    noSettingsMessage.classList.remove('hidden');
+                } else {
+                    noSettingsMessage.classList.add('hidden');
+                    settings.forEach(setting => settingsList.appendChild(createSettingCard(setting)));
+                }
+            }
+
+            function createSettingCard(setting) {
+                const card = document.createElement('div');
+                card.className = 'bg-gray-800 border border-gray-700 rounded-xl p-5 shadow-md flex flex-col justify-between';
+                const photoPreviewHTML = setting.photoUrl 
+                    ? `<img src="${setting.photoUrl}" alt="${setting.nom}" class="w-full h-40 object-cover rounded-lg mb-4 cursor-pointer photo-popup-trigger" data-id="${setting.id}" onerror="this.onerror=null;this.src='https://placehold.co/600x400/2d3748/718096?text=Image+invalide';">`
+                    : `<div class="w-full h-40 bg-gray-700 rounded-lg mb-4 flex items-center justify-center text-gray-500"><span>Pas de photo</span></div>`;
+                card.innerHTML = `
+                    <div>
+                        ${photoPreviewHTML}
+                        <h3 class="text-xl font-bold text-teal-300 truncate">${setting.nom}</h3>
+                        <p class="text-gray-400 text-sm mt-2 mb-4">${translations[currentLanguage].speed_label.split(' ')[0]}: ${setting.vitesse} mm/s | ${translations[currentLanguage].power_label.split(' ')[0]}: ${setting.puissance}%</p>
+                    </div>
+                    <div class="flex justify-between items-center mt-auto gap-2">
+                        <button class="edit-btn text-sm bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition duration-300 w-full" data-id="${setting.id}" data-lang-key="edit_button">${translations[currentLanguage].edit_button}</button>
+                        <button class="delete-btn text-sm bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-lg transition duration-300 w-full" data-id="${setting.id}" data-lang-key="delete_button">${translations[currentLanguage].delete_button}</button>
+                    </div>`;
+                return card;
+            }
+
+            function resetForm() {
+                form.reset();
+                editIdInput.value = '';
+                photoPreview.classList.add('hidden');
+                photoPreview.src = '';
+                submitBtn.textContent = translations[currentLanguage].save_button;
+                formTitle.textContent = translations[currentLanguage].form_title_add;
+                cancelEditBtn.classList.add('hidden');
+                ['vitesse-input', 'puissance-input', 'frequence-input'].forEach(id => document.getElementById(id).dispatchEvent(new Event('input')));
+            }
+
+            function populateFormForEdit(id) {
+                const setting = getSettingsFromStorage().find(s => s.id === id);
+                if (setting) {
+                    resetForm();
+                    editIdInput.value = id;
+                    document.getElementById('nom').value = setting.nom || '';
+                    document.getElementById('vitesse').value = setting.vitesse || 300;
+                    document.getElementById('puissance').value = setting.puissance || 100;
+                    document.getElementById('passes').value = setting.passes || 1;
+                    document.getElementById('angle').value = setting.angle || 15;
+                    document.getElementById('frequence').value = setting.frequence || 30;
+                    document.getElementById('lignes_par_cm').value = setting.lignes_par_cm || 300;
+                    document.getElementById('resultats').value = setting.resultats || '';
+                    ['vitesse', 'puissance', 'frequence'].forEach(type => document.getElementById(type).dispatchEvent(new Event('input')));
+                    if (setting.photoUrl) {
+                        photoPreview.src = setting.photoUrl;
+                        photoPreview.classList.remove('hidden');
+                    }
+                    formTitle.textContent = translations[currentLanguage].form_title_edit;
+                    submitBtn.textContent = translations[currentLanguage].update_button;
+                    cancelEditBtn.classList.remove('hidden');
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                } else {
+                    showAlert('alert_setting_not_found');
+                }
+            }
+
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const editId = editIdInput.value;
+                const photoFile = photoInput.files[0];
+                let photoUrl = '';
+                let settings = getSettingsFromStorage();
+                const existingSetting = settings.find(s => s.id === editId);
+                if (existingSetting) photoUrl = existingSetting.photoUrl;
+
+                if (photoFile) {
+                    if (photoFile.size > 10 * 1024 * 1024) return showAlert('alert_image_too_large');
+                    try {
+                        photoUrl = await resizeAndEncodeImage(photoFile, 800, 800, 0.7);
+                    } catch (error) { return showAlert('alert_image_error'); }
+                }
+
+                const settingData = {
+                    id: editId || `local_${Date.now()}`,
+                    nom: document.getElementById('nom').value,
+                    vitesse: document.getElementById('vitesse').value,
+                    puissance: document.getElementById('puissance').value,
+                    passes: document.getElementById('passes').value,
+                    angle: document.getElementById('angle').value,
+                    frequence: document.getElementById('frequence').value,
+                    lignes_par_cm: document.getElementById('lignes_par_cm').value,
+                    resultats: document.getElementById('resultats').value,
+                    photoUrl: photoUrl,
+                    updatedAt: new Date().toISOString()
+                };
+
+                if (editId) {
+                    const index = settings.findIndex(s => s.id === editId);
+                    if (index !== -1) {
+                        settingData.createdAt = settings[index].createdAt;
+                        settings[index] = settingData;
+                    }
+                } else {
+                    settingData.createdAt = new Date().toISOString();
+                    settings.push(settingData);
+                }
+                saveSettingsToStorage(settings);
+                loadAndRenderSettings();
+                resetForm();
+            });
+
+            settingsList.addEventListener('click', (e) => {
+                const target = e.target;
+                const id = target.dataset.id || target.closest('[data-id]')?.dataset.id;
+                if (!id) return;
+                if (target.classList.contains('photo-popup-trigger')) {
+                    const setting = getSettingsFromStorage().find(s => s.id === id);
+                    if (setting) showPhotoDetailsModal(setting);
+                } else {
+                    const button = target.closest('button');
+                    if (!button) return;
+                    if (button.classList.contains('delete-btn')) {
+                        showConfirm('confirm_delete_message', (confirmed) => {
+                            if (confirmed) {
+                                let settings = getSettingsFromStorage().filter(s => s.id !== id);
+                                saveSettingsToStorage(settings);
+                                loadAndRenderSettings();
+                            }
+                        });
+                    } else if (button.classList.contains('edit-btn')) {
+                        populateFormForEdit(id);
+                    }
+                }
+            });
+
+            cancelEditBtn.addEventListener('click', resetForm);
+            photoInput.addEventListener('change', (event) => {
+                const file = event.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        photoPreview.src = e.target.result;
+                        photoPreview.classList.remove('hidden');
+                    }
+                    reader.readAsDataURL(file);
+                }
+            });
+            closePhotoModalBtn.addEventListener('click', () => photoDetailsModal.classList.add('hidden'));
+            photoDetailsModal.addEventListener('click', (e) => { if (e.target === photoDetailsModal) photoDetailsModal.classList.add('hidden'); });
+            
+            exportBtn.addEventListener('click', () => {
+                const settings = getSettingsFromStorage();
+                if (settings.length === 0) return showAlert('alert_no_settings_to_export');
+                const dataBlob = new Blob([JSON.stringify(settings, null, 2)], {type: "application/json"});
+                const url = URL.createObjectURL(dataBlob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `laser_settings_backup_${new Date().toISOString().slice(0,10)}.json`;
+                a.click();
+                URL.revokeObjectURL(url);
+                a.remove();
+            });
+
+            importBtn.addEventListener('click', () => importFileInput.click());
+            importFileInput.addEventListener('change', (event) => {
+                const file = event.target.files[0];
+                if (!file) return;
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    try {
+                        const importedSettings = JSON.parse(e.target.result);
+                        if (!Array.isArray(importedSettings)) throw new Error("JSON is not an array.");
+                        showConfirm('confirm_import_message', (confirmed) => {
+                            if (confirmed) {
+                                saveSettingsToStorage(importedSettings);
+                                loadAndRenderSettings();
+                                showAlert('alert_import_success');
+                            }
+                        });
+                    } catch (err) { showAlert('alert_import_error'); } 
+                    finally { importFileInput.value = ''; }
+                };
+                reader.readAsText(file);
+            });
+
+            const resizeAndEncodeImage = (file, maxWidth, maxHeight, quality) => new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = (event) => {
+                    const img = new Image();
+                    img.src = event.target.result;
+                    img.onload = () => {
+                        const canvas = document.createElement('canvas');
+                        let { width, height } = img;
+                        if (width > height) { if (width > maxWidth) { height *= maxWidth / width; width = maxWidth; }
+                        } else { if (height > maxHeight) { width *= maxHeight / height; height = maxHeight; } }
+                        canvas.width = width;
+                        canvas.height = height;
+                        canvas.getContext('2d').drawImage(img, 0, 0, width, height);
+                        resolve(canvas.toDataURL('image/jpeg', quality));
+                    };
+                    img.onerror = reject;
+                };
+                reader.onerror = reject;
+            });
+
+            langSwitcher.addEventListener('click', () => {
+                const newLang = currentLanguage === 'fr' ? 'en' : 'fr';
+                setLanguage(newLang);
+                // We need to re-render the list to update the text on the cards
+                loadAndRenderSettings();
+            });
+
+            // Initial setup
+            setLanguage(currentLanguage);
+            loadAndRenderSettings();
+        });
+    </script>
+</body>
+</html>
