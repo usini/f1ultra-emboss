@@ -1,4 +1,5 @@
 # F1 Ultra Embossing Settings
+This application was made using Gemini Canvas and reviewed by @usini.
 
 Save and manage settings for your F1 Ultra laser engraver. This tool helps you keep track of your embossing configurations, so you can easily reuse them.
 
